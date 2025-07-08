@@ -20,7 +20,11 @@ public class User {
      */
     @Id
     @Column(name = "id", updatable = false, nullable = false)
-    private UUID ID;
+    private UUID Id;
+
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private Account account;
 
     @Column(nullable = false)
     private String username;
@@ -31,19 +35,4 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Account account;
-
-    @PrePersist
-    void generatedID (){
-        //Verification be ID is null
-        if (this.ID == null){
-            //Generated the UUID
-            this.ID = UUID.randomUUID();
-        }
-    }
-
-    public UUID getId() {
-        return ID;
-    }
 }

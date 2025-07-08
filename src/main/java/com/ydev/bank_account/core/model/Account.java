@@ -21,7 +21,12 @@ import java.util.UUID;
 public class Account {
 
     @Id
-    private UUID ID;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID Id;
+
+    @OneToOne(targetEntity = User.class, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     @Email
     private String email;
@@ -33,15 +38,6 @@ public class Account {
     private String accountHolderName;
 
     private double balance;
-
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "ID")
-    private User user;
-
-    public UUID getId(){
-        return ID;
-    }
 
     public void deposit(double amount) {
         if (amount > 0) {

@@ -24,7 +24,22 @@ public class UserService {
      * @return Usuário criado com ID gerado e conta associada
      */
     public User createUser(User user) {
-       return userRepository.save(user);
+
+        if (user.getId() == null){
+            user.setId(UUID.randomUUID());
+        }
+
+        Account account = new Account();
+        account.setId(user.getId());
+        account.setUser(user);
+        account.setEmail(user.getEmail());
+        account.setAccountHolderName(user.getUsername());
+        account.setAccountNumber(account.generateAccountNumber());
+        account.setBalance(0.0);
+
+        user.setAccount(account);
+
+        return userRepository.save(user);
     }
 
     /**
